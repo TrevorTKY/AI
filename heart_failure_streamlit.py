@@ -5,7 +5,17 @@ from joblib import load
 # Load the models and preprocessing steps
 heart_failure_model = load('heart_failure_model.joblib')
 
+# Extract models and preprocessing steps
+knn = heart_failure_model['knn']
+ann = heart_failure_model['ann']
+svm = heart_failure_model['svm']
+scaler = heart_failure_model['scaler']
+label_encoder = heart_failure_model['label_encoder']
+
 # Create user input fields
+st.title('Heart Disease Prediction')
+st.write("Enter the details below to predict the likelihood of heart disease.")
+
 age = st.number_input('Enter age:', min_value=0, max_value=120, step=1)
 resting_bp = st.number_input('Resting Blood Pressure:', min_value=0, step=1)
 cholesterol = st.number_input('Cholesterol Level:', min_value=0, step=1)
