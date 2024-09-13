@@ -43,21 +43,23 @@ else:
     # Function to make predictions for the unseen data
     def predict_unseen_data(models, input_data):
         st.write("### Prediction Results")
-        
+
         for model, model_name in models:
             try:
                 y_pred = model.predict(input_data)
                 y_prob = model.predict_proba(input_data)[:, 1] if hasattr(model, 'predict_proba') else None
                 heart_failure = "Yes" if y_pred[0] == 1 else "No"
                 
-                st.write(f"### {model_name} Model")
-                st.write(f"Prediction: {heart_failure}")
+                # Format results
+                st.write(f"### {model_name} Results:")
+                st.write(f"Age Entered: {age}")
                 if y_prob is not None:
                     # Ensure y_prob is a scalar for formatting
                     prob_value = y_prob[0] if isinstance(y_prob, (list, np.ndarray)) else y_prob
                     st.write(f"Probability of Heart Disease: {prob_value * 100:.2f}%")
                 else:
                     st.write("Probability information not available")
+                st.write(f"Heart Failure: {heart_failure}")
             except Exception as e:
                 st.error(f"Error with {model_name} model: {e}")
 
