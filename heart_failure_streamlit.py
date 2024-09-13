@@ -6,6 +6,13 @@ import numpy as np
 # Load the models and preprocessing steps
 heart_failure_model = load('heart_failure_model.joblib')
 
+# Extract models and preprocessing steps
+knn = heart_failure_model['knn']
+ann = heart_failure_model['ann']
+svm = heart_failure_model['svm']
+scaler = heart_failure_model['scaler']
+label_encoder = heart_failure_model['label_encoder']
+
 # Function to make predictions for the unseen data
 def predict_unseen_data(models):
     unseen_data = get_unseen_data()
