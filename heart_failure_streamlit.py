@@ -1,4 +1,14 @@
+import streamlit as st
+import pandas as pd
+from joblib import load
 
+# Load the models and preprocessing steps
+heart_failure_model = load('heart_failure_model.joblib')
+knn = heart_failure_model['knn']
+ann = heart_failure_model['ann']
+svm = heart_failure_model['svm']
+scaler = heart_failure_model['scaler']
+label_encoder = heart_failure_model['label_encoder']
 
 # Create a user input field for the features
 age = st.number_input('Enter age:', min_value=0, max_value=120, step=1)
@@ -16,8 +26,10 @@ input_df = pd.DataFrame({
     'RestingECG': [resting_ecg]
 })
 
-# Transform the RestingECG feature
+# Transform the RestingECG feature using the label encoder
 input_df['RestingECG'] = label_encoder.transform(input_df['RestingECG'])
+
+# Scale the input data
 input_df_scaled = scaler.transform(input_df)
 
 # Predict using each model
@@ -29,11 +41,14 @@ if st.button('Predict Heart Disease Probability'):
     }
 
     for model_name, model in models.items():
-        prediction = model.predict(input_df_scaled)
-        probability = model.predict_proba(input_df_scaled)[:, 1] if hasattr(model, 'predict_proba') else None
-        
-        # Display results
-        st.write(f"### {model_name} Model")
-        st.write(f"Prediction: {'Heart Disease' if prediction[0] == 1 else 'No Heart Disease'}")
-        if probability is not None:
-            st.write(f"Probability of Heart Disease: {probability[0] * 100:.2f}%")
+        try:
+            prediction = model.predict(input_df_scaled)
+            probability = model.predict_proba(input_df_scaled)[:, 1] if hasattr(model, 'predict_proba') else None
+
+            # Display results
+            st.write(f"### {model_name} Model")
+            st.write(f"Prediction: {'Heart Disease' if prediction[0] == 1 else 'No Heart Disease'}")
+            if probability is not None:
+                st.write(f"Probability of Heart Disease: {probability[0] * 100:.2f}%")
+        except Exception as e:
+            st.error(f"Error with {model_name} model: {e}")
