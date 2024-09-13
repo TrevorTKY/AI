@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from joblib import load
+import numpy as np
 
 # Load the models and preprocessing steps
 heart_failure_model = load('heart_failure_model.joblib')
