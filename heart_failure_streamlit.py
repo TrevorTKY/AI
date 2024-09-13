@@ -1,18 +1,7 @@
 import streamlit as st
 import pandas as pd
-from joblib import dump, load
+from joblib import load
 
-# Create a dictionary to hold the models and preprocessing objects
-heart_failure_model = {
-    'knn': knn,
-    'ann': ann,
-    'svm': svm,
-    'scaler': scaler,
-    'label_encoder': label_encoder
-}
-
-# Save the entire dictionary as a single joblib file
-dump(heart_failure_model, 'heart_failure_model.joblib')
 
 # Load the models and preprocessing steps
 heart_failure_model = load('heart_failure_model.joblib')
