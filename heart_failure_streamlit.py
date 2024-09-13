@@ -1,22 +1,25 @@
-# Streamlit app for user input and prediction
-def run_streamlit_app():
+import streamlit as st
+import pandas as pd
+from joblib import load
+
+
     # Load the models and preprocessing steps
-    heart_failure_model = load('heart_failure_model.joblib')
-    knn = heart_failure_model['knn']
-    ann = heart_failure_model['ann']
-    svm = heart_failure_model['svm']
-    scaler = heart_failure_model['scaler']
-    label_encoder = heart_failure_model['label_encoder']
+heart_failure_model = load('heart_failure_model.joblib')
+knn = heart_failure_model['knn']
+ann = heart_failure_model['ann']
+svm = heart_failure_model['svm']
+scaler = heart_failure_model['scaler']
+label_encoder = heart_failure_model['label_encoder']
 
     # Create a user input field for the features
-    age = st.number_input('Enter age:', min_value=0, max_value=120, step=1)
-    resting_bp = st.number_input('Resting Blood Pressure:', min_value=0, step=1)
-    cholesterol = st.number_input('Cholesterol Level:', min_value=0, step=1)
-    max_hr = st.number_input('Maximum Heart Rate:', min_value=0, step=1)
-    resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST', 'LVH'])
+age = st.number_input('Enter age:', min_value=0, max_value=120, step=1)
+resting_bp = st.number_input('Resting Blood Pressure:', min_value=0, step=1)
+cholesterol = st.number_input('Cholesterol Level:', min_value=0, step=1)
+max_hr = st.number_input('Maximum Heart Rate:', min_value=0, step=1)
+resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST', 'LVH'])
 
     # Create a DataFrame with the same column names used in training
-    input_df = pd.DataFrame({
+input_df = pd.DataFrame({
         'Age': [age],
         'RestingBP': [resting_bp],
         'Cholesterol': [cholesterol],
@@ -25,9 +28,9 @@ def run_streamlit_app():
     })
 
     # Handle unknown labels in RestingECG
-    if resting_ecg not in label_encoder.classes_:
+if resting_ecg not in label_encoder.classes_:
         st.error(f"Unknown value '{resting_ecg}' for RestingECG. Please select from {label_encoder.classes_}.")
-    else:
+else:
         # Transform the RestingECG feature using the label encoder
         input_df['RestingECG'] = label_encoder.transform(input_df['RestingECG'])
         
@@ -54,6 +57,3 @@ def run_streamlit_app():
                         st.write(f"Probability of Heart Disease: {probability[0] * 100:.2f}%")
                 except Exception as e:
                     st.error(f"Error with {model_name} model: {e}")
-
-# Run the Streamlit app
-run_streamlit_app()
