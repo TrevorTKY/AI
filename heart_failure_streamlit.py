@@ -21,11 +21,11 @@ st.set_page_config(page_title='Heart Failure Prediction', page_icon=':heart:', l
 st.markdown("""
     <style>
     .main {
-        background: linear-gradient(135deg, #9e62a4, #8a42b6); /* Purple gradient */
+        background: linear-gradient(135deg, #5DADE2, #1F618D); /* Blue gradient */
         color: #fff;
     }
     .stButton button {
-        background-color: #6c2fa4;
+        background-color: #1A5276;
         color: white;
         font-size: 16px;
         font-weight: bold;
@@ -33,7 +33,7 @@ st.markdown("""
         padding: 10px 20px;
     }
     .stButton button:hover {
-        background-color: #582190;
+        background-color: #154360;
     }
     .stTextInput label {
         color: #fff;  /* Label color */
@@ -42,15 +42,15 @@ st.markdown("""
         color: #fff; /* Label color for selectbox */
     }
     .css-10trblm {
-        background-color: #582190; /* Box background color */
+        background-color: #154360; /* Box background color */
         border: none;
     }
     .css-12yzwg4 {
-        background-color: #8a42b6;
+        background-color: #1A5276;
         border-radius: 8px;
     }
     .css-12yzwg4:hover {
-        background-color: #582190; /* Darker hover */
+        background-color: #154360; /* Darker hover */
     }
     </style>
     """, unsafe_allow_html=True)
@@ -111,27 +111,4 @@ else:
         st.dataframe(results_df)
 
         # Plotting the probabilities
-        st.write("### Probability of Heart Disease for Each Model")
-        fig, ax = plt.subplots(figsize=(10, 6))
-        models_names = [result['Model'] for result in results]
-        probabilities = [float(result['Probability of Heart Disease'].replace('%', '')) for result in results]
-        
-        ax.bar(models_names, probabilities, color=['#007bff', '#28a745', '#dc3545'])
-        ax.set_xlabel('Model')
-        ax.set_ylabel('Probability (%)')
-        ax.set_title('Probability of Heart Disease for Each Model')
-        ax.set_ylim(0, 100)
-        plt.xticks(rotation=45, ha='right')
-
-        st.pyplot(fig)
-
-    # Define models list for prediction
-    models = [
-        (knn, "KNN"),
-        (ann, "ANN"),
-        (svm, "SVM")
-    ]
-
-    # Call the function to predict
-    if st.button('Predict Heart Failure'):
-        predict_unseen_data(models, input_df_scaled)
+        st.write("### Probability of Heart
