@@ -111,4 +111,27 @@ else:
         st.dataframe(results_df)
 
         # Plotting the probabilities
-        st.write("### Probability of Heart
+        st.write("### Probability of Heart Disease for Each Model")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        models_names = [result['Model'] for result in results]
+        probabilities = [float(result['Probability of Heart Disease'].replace('%', '')) for result in results]
+        
+        ax.bar(models_names, probabilities, color=['#2980B9', '#27AE60', '#E74C3C'])
+        ax.set_xlabel('Model')
+        ax.set_ylabel('Probability (%)')
+        ax.set_title('Probability of Heart Disease for Each Model')
+        ax.set_ylim(0, 100)
+        plt.xticks(rotation=45, ha='right')
+
+        st.pyplot(fig)
+
+    # Define models list for prediction
+    models = [
+        (knn, "KNN"),
+        (ann, "ANN"),
+        (svm, "SVM")
+    ]
+
+    # Call the function to predict
+    if st.button('Predict Heart Failure'):
+        predict_unseen_data(models, input_df_scaled)
