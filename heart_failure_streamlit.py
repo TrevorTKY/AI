@@ -15,13 +15,19 @@ label_encoder = heart_failure_model['label_encoder']
 
 # Create user input fields
 st.title('Heart Failure Prediction')
-st.write("Enter the details below to predict the likelihood of heart failure.")
+st.write("Please enter the details below to predict the likelihood of heart failure. The models used for prediction are KNN, ANN, and SVM.")
 
-age = st.number_input('Enter age:', min_value=0, max_value=120, step=1)
-resting_bp = st.number_input('Resting Blood Pressure:', min_value=0, step=1)
-cholesterol = st.number_input('Cholesterol Level:', min_value=0, step=1)
-max_hr = st.number_input('Maximum Heart Rate:', min_value=0, step=1)
-resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST', 'LVH'])
+# User inputs
+col1, col2 = st.columns(2)
+
+with col1:
+    age = st.number_input('Age:', min_value=0, max_value=120, step=1)
+    resting_bp = st.number_input('Resting Blood Pressure (mm Hg):', min_value=0, step=1)
+    cholesterol = st.number_input('Cholesterol Level (mg/dL):', min_value=0, step=1)
+
+with col2:
+    max_hr = st.number_input('Maximum Heart Rate (bpm):', min_value=0, step=1)
+    resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST', 'LVH'])
 
 # Create DataFrame for input
 input_df = pd.DataFrame({
@@ -44,6 +50,7 @@ else:
     def predict_unseen_data(models, input_data):
         st.write("### Prediction Results")
 
+        results = []
         for model, model_name in models:
             try:
                 y_pred = model.predict(input_data)
@@ -51,17 +58,21 @@ else:
                 heart_failure = "Yes" if y_pred[0] == 1 else "No"
                 
                 # Format results
-                st.write(f"### {model_name} Results:")
-                st.write(f"Age Entered: {age}")
-                if y_prob is not None:
-                    # Ensure y_prob is a scalar for formatting
-                    prob_value = y_prob[0] if isinstance(y_prob, (list, np.ndarray)) else y_prob
-                    st.write(f"Probability of Heart Disease: {prob_value * 100:.2f}%")
-                else:
-                    st.write("Probability information not available")
-                st.write(f"Heart Failure: {heart_failure}")
+                result = {
+                    'Model': model_name,
+                    'Prediction': heart_failure,
+                    'Probability': f"{y_prob[0] * 100:.2f}%" if y_prob is not None else "N/A"
+                }
+                results.append(result)
             except Exception as e:
                 st.error(f"Error with {model_name} model: {e}")
+
+        # Display results in a more structured format
+        results_df = pd.DataFrame(results)
+        st.table(results_df)
+
+        # Plot results
+        st.bar_chart(results_df.set_index('Model')['Probability'].apply(lambda x: float(x.rstrip('%'))))
 
     # Define models list for prediction
     models = [
@@ -72,4 +83,5 @@ else:
 
     # Call the function to predict
     if st.button('Predict Heart Failure'):
-        predict_unseen_data(models, input_df_scaled)
+        with st.spinner('Making predictions...'):
+            predict_unseen_data(models, input_df_scaled)
