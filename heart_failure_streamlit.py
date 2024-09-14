@@ -14,8 +14,8 @@ scaler = heart_failure_model['scaler']
 label_encoder = heart_failure_model['label_encoder']
 
 # Create user input fields
-st.title('Heart Disease Prediction')
-st.write("Enter the details below to predict the likelihood of heart disease.")
+st.title('Heart Failure Prediction')
+st.write("Enter the details below to predict the likelihood of heart failure.")
 
 age = st.number_input('Enter age:', min_value=0, max_value=120, step=1)
 resting_bp = st.number_input('Resting Blood Pressure:', min_value=0, step=1)
@@ -71,5 +71,5 @@ else:
     ]
 
     # Call the function to predict
-    if st.button('Predict Heart Disease Probability'):
+    if st.button('Predict Heart Failure'):
         predict_unseen_data(models, input_df_scaled)
