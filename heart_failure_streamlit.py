@@ -14,21 +14,59 @@ svm = heart_failure_model['svm']
 scaler = heart_failure_model['scaler']
 label_encoder = heart_failure_model['label_encoder']
 
-# Set the Streamlit page configuration
+# Set up page configuration and custom styles
 st.set_page_config(page_title='Heart Failure Prediction', page_icon=':heart:', layout='wide')
+
+# Custom CSS for background and form styling
+st.markdown("""
+    <style>
+    .main {
+        background: linear-gradient(135deg, #9e62a4, #8a42b6); /* Purple gradient */
+        color: #fff;
+    }
+    .stButton button {
+        background-color: #6c2fa4;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 10px;
+        padding: 10px 20px;
+    }
+    .stButton button:hover {
+        background-color: #582190;
+    }
+    .stTextInput label {
+        color: #fff;  /* Label color */
+    }
+    .stSelectbox label {
+        color: #fff; /* Label color for selectbox */
+    }
+    .css-10trblm {
+        background-color: #582190; /* Box background color */
+        border: none;
+    }
+    .css-12yzwg4 {
+        background-color: #8a42b6;
+        border-radius: 8px;
+    }
+    .css-12yzwg4:hover {
+        background-color: #582190; /* Darker hover */
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # Title and description
 st.title('Heart Failure Prediction System')
-st.write("Enter the details below to predict the likelihood of heart failure based on various models (KNN, ANN, SVM).")
+st.write("Enter the details below to predict the likelihood of heart failure.")
 
-# Input fields for user data
+# Create input fields
 age = st.number_input('Age:', min_value=0, max_value=120, step=1, help="Enter the age of the patient.")
 resting_bp = st.number_input('Resting Blood Pressure (mm Hg):', min_value=0, step=1, help="Enter the resting blood pressure.")
 cholesterol = st.number_input('Cholesterol Level (mg/dl):', min_value=0, step=1, help="Enter the cholesterol level.")
 max_hr = st.number_input('Maximum Heart Rate (bpm):', min_value=0, step=1, help="Enter the maximum heart rate.")
 resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST', 'LVH'], help="Select the type of resting ECG.")
 
-# Create a DataFrame for the input data
+# Create DataFrame for input
 input_df = pd.DataFrame({
     'Age': [age],
     'RestingBP': [resting_bp],
@@ -37,7 +75,7 @@ input_df = pd.DataFrame({
     'RestingECG': [resting_ecg]
 })
 
-# Handle unknown labels for RestingECG
+# Handle unknown labels
 if resting_ecg not in label_encoder.classes_:
     st.error(f"Unknown value '{resting_ecg}' for RestingECG. Please select from {label_encoder.classes_}.")
 else:
@@ -45,13 +83,9 @@ else:
     input_df['RestingECG'] = label_encoder.transform(input_df['RestingECG'])
     input_df_scaled = scaler.transform(input_df)
 
-    # Function to make predictions using multiple models and highlight the best model
+    # Function to make predictions for the unseen data
     def predict_unseen_data(models, input_data):
         st.write("### Prediction Results")
-        best_model = None
-        best_model_name = None
-        best_probability = 0
-        
         results = []
         
         for model, model_name in models:
@@ -60,12 +94,7 @@ else:
                 y_prob = model.predict_proba(input_data)[:, 1] if hasattr(model, 'predict_proba') else None
                 heart_failure = "Yes" if y_pred[0] == 1 else "No"
                 
-                # Determine the best model based on probability
-                if y_prob is not None and y_prob[0] > best_probability:
-                    best_probability = y_prob[0]
-                    best_model = model
-                    best_model_name = model_name
-                    
+                # Format results
                 result = {
                     "Model": model_name,
                     "Age Entered": age,
@@ -77,56 +106,32 @@ else:
             except Exception as e:
                 st.error(f"Error with {model_name} model: {e}")
 
-        # Display the result for the best model
-        if best_model:
-            best_result = next(result for result in results if result['Model'] == best_model_name)
-            st.write(f"**Best Model: {best_model_name}**")
-            st.write(pd.DataFrame([best_result]))
+        # Display results in a table
+        results_df = pd.DataFrame(results)
+        st.dataframe(results_df)
 
-            # Plotting the probability for the best model
-            st.write("### Probability of Heart Disease for the Best Model")
-            fig, ax = plt.subplots(figsize=(10, 6))
-            ax.bar(best_model_name, float(best_result['Probability of Heart Disease'].replace('%', '')), color='#007bff')
-            ax.set_xlabel('Model')
-            ax.set_ylabel('Probability (%)')
-            ax.set_title('Probability of Heart Disease for the Best Model')
-            ax.set_ylim(0, 100)
-            plt.xticks(rotation=45, ha='right')
+        # Plotting the probabilities
+        st.write("### Probability of Heart Disease for Each Model")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        models_names = [result['Model'] for result in results]
+        probabilities = [float(result['Probability of Heart Disease'].replace('%', '')) for result in results]
+        
+        ax.bar(models_names, probabilities, color=['#007bff', '#28a745', '#dc3545'])
+        ax.set_xlabel('Model')
+        ax.set_ylabel('Probability (%)')
+        ax.set_title('Probability of Heart Disease for Each Model')
+        ax.set_ylim(0, 100)
+        plt.xticks(rotation=45, ha='right')
 
-            st.pyplot(fig)
-        else:
-            st.write("No model was able to make a prediction.")
+        st.pyplot(fig)
 
-    # List of models for prediction
+    # Define models list for prediction
     models = [
         (knn, "KNN"),
         (ann, "ANN"),
         (svm, "SVM")
     ]
 
-    # Trigger prediction when the button is clicked
+    # Call the function to predict
     if st.button('Predict Heart Failure'):
         predict_unseen_data(models, input_df_scaled)
-
-# Customizing Streamlit theme via markdown
-st.markdown("""
-    <style>
-    .css-1n76uvr {
-        background-color: #f0f2f6; /* Light background color */
-    }
-    .css-1n76uvr .css-1g1z3l2 { /* Adjusts the sidebar color */
-        background-color: #003366; /* Dark blue sidebar */
-        color: white;
-    }
-    .css-1n76uvr .css-12yzwg4 { /* Adjusts button color */
-        background-color: #007bff; /* Bootstrap primary blue */
-        color: white;
-    }
-    .css-1n76uvr .css-12yzwg4:hover {
-        background-color: #0056b3; /* Darker blue on hover */
-    }
-    .css-1n76uvr .css-1v0t7x4 { /* Adjusts text color */
-        color: #333;
-    }
-    </style>
-    """, unsafe_allow_html=True)
