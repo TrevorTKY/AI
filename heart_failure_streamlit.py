@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 from joblib import load
 
 # Load the models and preprocessing steps
@@ -61,18 +59,6 @@ else:
             st.warning("Based on the prediction, there is a significant chance that you might develop heart failure.")
         else:
             st.success("Based on the prediction, it is unlikely that you will develop heart failure.")
-
-        # Plotting the probability
-        st.write("### Probability of Heart Disease")
-        fig, ax = plt.subplots(figsize=(6, 4))
-        ax.bar('KNN', probability, color='#007bff')
-        ax.set_xlabel('Model')
-        ax.set_ylabel('Probability (%)')
-        ax.set_title('Probability of Heart Disease')
-        ax.set_ylim(0, 100)
-        plt.xticks(rotation=45, ha='right')
-
-        st.pyplot(fig)
 
 # Customizing Streamlit theme via markdown
 st.markdown("""
