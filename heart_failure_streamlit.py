@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from joblib import load
 
 # Load the models and preprocessing steps
@@ -45,7 +46,6 @@ else:
     # Function to make predictions for the unseen data
     def predict_unseen_data(models, input_data):
         st.write("### Prediction Results")
-        st.markdown("#### Model Performance")
         results = []
         
         for model, model_name in models:
@@ -70,7 +70,20 @@ else:
         results_df = pd.DataFrame(results)
         st.dataframe(results_df)
 
-        # Additional visualization or details can be added here if needed
+        # Plotting the probabilities
+        st.write("### Probability of Heart Disease for Each Model")
+        fig, ax = plt.subplots(figsize=(10, 6))
+        models_names = [result['Model'] for result in results]
+        probabilities = [float(result['Probability of Heart Disease'].replace('%', '')) for result in results]
+        
+        ax.bar(models_names, probabilities, color=['#007bff', '#28a745', '#dc3545'])
+        ax.set_xlabel('Model')
+        ax.set_ylabel('Probability (%)')
+        ax.set_title('Probability of Heart Disease for Each Model')
+        ax.set_ylim(0, 100)
+        plt.xticks(rotation=45, ha='right')
+
+        st.pyplot(fig)
 
     # Define models list for prediction
     models = [
