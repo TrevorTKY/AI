@@ -51,8 +51,6 @@ else:
         heart_failure = "Yes" if y_pred[0] == 1 else "No"
 
         st.write(f"### Prediction Results")
-        st.write(f"**Probability of Heart Disease: {probability:.2f}%**")
-        st.write(f"**Heart Failure Prediction: {heart_failure}**")
         
         # Additional message
         if y_pred[0] == 1:
