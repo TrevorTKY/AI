@@ -65,4 +65,34 @@ else:
         # Plotting the probability
         st.write("### Probability of Heart Disease")
         fig, ax = plt.subplots(figsize=(6, 4))
-        ax.bar('K
+        ax.bar('KNN', probability, color='#007bff')
+        ax.set_xlabel('Model')
+        ax.set_ylabel('Probability (%)')
+        ax.set_title('Probability of Heart Disease')
+        ax.set_ylim(0, 100)
+        plt.xticks(rotation=45, ha='right')
+
+        st.pyplot(fig)
+
+# Customizing Streamlit theme via markdown
+st.markdown("""
+    <style>
+    .css-1n76uvr {
+        background-color: #f0f2f6; /* Light background color */
+    }
+    .css-1n76uvr .css-1g1z3l2 { /* Adjusts the sidebar color */
+        background-color: #003366; /* Dark blue sidebar */
+        color: white;
+    }
+    .css-1n76uvr .css-12yzwg4 { /* Adjusts button color */
+        background-color: #007bff; /* Bootstrap primary blue */
+        color: white;
+    }
+    .css-1n76uvr .css-12yzwg4:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+    .css-1n76uvr .css-1v0t7x4 { /* Adjusts text color */
+        color: #333;
+    }
+    </style>
+    """, unsafe_allow_html=True)
