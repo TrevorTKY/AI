@@ -52,6 +52,7 @@ else:
 
         st.write(f"### Prediction Results")
         
+        
         # Additional message
         if y_pred[0] == 1:
             st.warning("Based on the prediction, there is a significant chance that you might develop heart failure.")
