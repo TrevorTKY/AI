@@ -87,7 +87,6 @@ st.sidebar.write("""
     It's powered by a K-Nearest Neighbors (KNN) model, trained on health data.
 """)
 
-st.sidebar.image("https://image-url-here.com/heart.png", use_column_width=True)
 
 # Main content layout
 with st.container():
