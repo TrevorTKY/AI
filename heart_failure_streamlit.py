@@ -15,9 +15,33 @@ feature_selector = heart_failure_model['feature_selector']
 # Set the Streamlit page configuration
 st.set_page_config(page_title='Heart Failure Prediction', page_icon=':heart:', layout='wide')
 
-# Title and description
+# Add logo or name at the top
+st.image('path/to/logo.png', width=200)  # Add your logo image path
 st.title('Heart Failure Prediction System')
 st.write("Enter the details below to predict the likelihood of heart failure using the KNN model.")
+
+# Input fields for user data with smaller input boxes
+st.markdown("""
+    <style>
+    .css-1n76uvr .css-1g1z3l2 {
+        background-color: #003366;
+        color: white;
+    }
+    .css-1n76uvr .css-12yzwg4 {
+        background-color: #007bff;
+        color: white;
+    }
+    .css-1n76uvr .css-12yzwg4:hover {
+        background-color: #0056b3;
+    }
+    .css-1n76uvr .css-1v0t7x4 {
+        color: #333;
+    }
+    .css-1n76uvr .css-1c6y2i7 {
+        width: 250px; /* Adjust width of input boxes */
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
 # Input fields for user data
 age = st.number_input('Age:', min_value=0, max_value=120, step=1, help="Enter the age of the patient.")
@@ -72,26 +96,3 @@ else:
             st.warning("Based on the prediction, there is a significant chance that you might develop heart failure.")
         else:
             st.success("Based on the prediction, it is unlikely that you will develop heart failure.")
-
-# Customizing Streamlit theme via markdown
-st.markdown("""
-    <style>
-    .css-1n76uvr {
-        background-color: #f0f2f6; /* Light background color */
-    }
-    .css-1n76uvr .css-1g1z3l2 { /* Adjusts the sidebar color */
-        background-color: #003366; /* Dark blue sidebar */
-        color: white;
-    }
-    .css-1n76uvr .css-12yzwg4 { /* Adjusts button color */
-        background-color: #007bff; /* Bootstrap primary blue */
-        color: white;
-    }
-    .css-1n76uvr .css-12yzwg4:hover {
-        background-color: #0056b3; /* Darker blue on hover */
-    }
-    .css-1n76uvr .css-1v0t7x4 { /* Adjusts text color */
-        color: #333;
-    }
-    </style>
-    """, unsafe_allow_html=True)
