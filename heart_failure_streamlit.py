@@ -18,26 +18,30 @@ st.set_page_config(page_title='Heart Failure Prediction', page_icon=':heart:', l
 st.title('Heart Failure Prediction System')
 st.write("Enter the details below to predict the likelihood of heart failure using the KNN model.")
 
-# Input fields for user data with lighter colors and smaller input boxes
+# Apply custom CSS styles
 st.markdown("""
     <style>
-    /* Background and button colors */
-    .css-1n76uvr .css-1g1z3l2 {
+    /* Apply custom styles directly */
+    .stNumberInput input[type="number"] {
         background-color: #e0f7fa; /* Light blue */
         color: #00796b; /* Darker teal */
+        border-radius: 5px;
     }
-    .css-1n76uvr .css-12yzwg4 {
+    .stSelectbox select {
+        background-color: #e0f7fa; /* Light blue */
+        color: #00796b; /* Darker teal */
+        border-radius: 5px;
+    }
+    .stButton button {
         background-color: #4db6ac; /* Teal */
         color: white;
+        border-radius: 5px;
     }
-    .css-1n76uvr .css-12yzwg4:hover {
+    .stButton button:hover {
         background-color: #00796b; /* Darker teal */
     }
-    .css-1n76uvr .css-1v0t7x4 {
+    .stMarkdown h3 {
         color: #004d40; /* Darker teal */
-    }
-    .css-1n76uvr .css-1c6y2i7 {
-        width: 200px; /* Smaller width of input boxes */
     }
     </style>
     """, unsafe_allow_html=True)
