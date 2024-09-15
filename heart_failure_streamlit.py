@@ -22,7 +22,7 @@ age = st.number_input('Age:', min_value=0, max_value=120, step=1, help="Enter th
 resting_bp = st.number_input('Resting Blood Pressure (mm Hg):', min_value=0, step=1, help="Enter the resting blood pressure.")
 cholesterol = st.number_input('Cholesterol Level (mg/dl):', min_value=0, step=1, help="Enter the cholesterol level.")
 max_hr = st.number_input('Maximum Heart Rate (bpm):', min_value=0, step=1, help="Enter the maximum heart rate.")
-resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST', 'LVH'], help="Select the type of resting ECG.")
+resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST (Abnormal)', 'LVH (Left Ventricular Hypertrophy)'], help="Select the type of resting ECG.")
 
 # Create a DataFrame for the input data
 input_df = pd.DataFrame({
