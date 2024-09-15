@@ -21,27 +21,19 @@ st.write("Enter the details below to predict the likelihood of heart failure usi
 # Apply custom CSS styles
 st.markdown("""
     <style>
-    /* Apply custom styles directly */
-    .stNumberInput input[type="number"] {
-        background-color: #e0f7fa; /* Light blue */
-        color: #00796b; /* Darker teal */
-        border-radius: 5px;
+    /* Page background color */
+    .css-1n76uvr {
+        background-color: #f0f8ff; /* Alice Blue */
     }
-    .stSelectbox select {
-        background-color: #e0f7fa; /* Light blue */
-        color: #00796b; /* Darker teal */
-        border-radius: 5px;
+    /* Header color */
+    .css-1n76uvr h1 {
+        color: #003366; /* Dark Blue */
     }
-    .stButton button {
-        background-color: #4db6ac; /* Teal */
-        color: white;
-        border-radius: 5px;
+    .css-1n76uvr h2 {
+        color: #003366; /* Dark Blue */
     }
-    .stButton button:hover {
-        background-color: #00796b; /* Darker teal */
-    }
-    .stMarkdown h3 {
-        color: #004d40; /* Darker teal */
+    .css-1n76uvr h3 {
+        color: #003366; /* Dark Blue */
     }
     </style>
     """, unsafe_allow_html=True)
