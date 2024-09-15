@@ -15,7 +15,7 @@ st.set_page_config(page_title='Heart Failure Prediction', page_icon=':heart:', l
 
 # Title and description
 st.title('Heart Failure Prediction System')
-st.write("Enter the details below to predict the likelihood of heart failure.")
+st.write("Enter the details below to predict the likelihood of heart failure using the KNN model.")
 
 # Input fields for user data
 age = st.number_input('Age:', min_value=0, max_value=120, step=1, help="Enter the age of the patient.")
@@ -50,10 +50,20 @@ else:
         probability = y_prob[0] * 100  # Convert to percentage
         heart_failure = "Yes" if y_pred[0] == 1 else "No"
 
+        # Display entered details
+        st.write(f"### Entered Details")
+        st.write(f"- *Age:* {age}")
+        st.write(f"- *Resting Blood Pressure:* {resting_bp} mm Hg")
+        st.write(f"- *Cholesterol Level:* {cholesterol} mg/dl")
+        st.write(f"- *Maximum Heart Rate:* {max_hr} bpm")
+        st.write(f"- *Resting ECG:* {resting_ecg}")
+
+        # Display prediction result
         st.write(f"### Prediction Results")
-        
-        
-        # Additional message
+        st.write(f"- *Heart Failure Likelihood:* {heart_failure}")
+        st.write(f"- *Predicted Probability of Heart Failure:* {probability:.2f}%")
+
+        # Additional message based on prediction
         if y_pred[0] == 1:
             st.warning("Based on the prediction, there is a significant chance that you might develop heart failure.")
         else:
