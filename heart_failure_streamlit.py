@@ -41,33 +41,36 @@ else:
     input_df['RestingECG'] = label_encoder.transform(input_df['RestingECG'])
     input_df_scaled = scaler.transform(input_df)
 
-    # Prediction using KNN model
-    if st.button('Predict Heart Failure'):
-        y_pred = knn.predict(input_df_scaled)
-        y_prob = knn.predict_proba(input_df_scaled)[:, 1]  # Get the probability of heart failure
+   # Prediction using KNN model
+if st.button('Predict Heart Failure'):
+    y_prob = knn.predict_proba(input_df_scaled)[:, 1]  # Get the probability of heart failure
 
-        # Display results
-        probability = y_prob[0] * 100  # Convert to percentage
-        heart_failure = "Yes" if y_pred[0] == 1 else "No"
+    # Custom threshold: if probability > 50%, classify as "Yes" (heart failure)
+    threshold = 0.5
+    heart_failure = "Yes" if y_prob[0] > threshold else "No"
 
-        # Display entered details
-        st.write(f"### Entered Details")
-        st.write(f"- *Age:* {age}")
-        st.write(f"- *Resting Blood Pressure:* {resting_bp} mm Hg")
-        st.write(f"- *Cholesterol Level:* {cholesterol} mg/dl")
-        st.write(f"- *Maximum Heart Rate:* {max_hr} bpm")
-        st.write(f"- *Resting ECG:* {resting_ecg}")
+    # Convert probability to percentage
+    probability = y_prob[0] * 100  # Convert to percentage
 
-        # Display prediction result
-        st.write(f"### Prediction Results")
-        st.write(f"- *Heart Failure Likelihood:* {heart_failure}")
-        st.write(f"- *Predicted Probability of Heart Failure:* {probability:.2f}%")
+    # Display entered details
+    st.write(f"### Entered Details")
+    st.write(f"- *Age:* {age}")
+    st.write(f"- *Resting Blood Pressure:* {resting_bp} mm Hg")
+    st.write(f"- *Cholesterol Level:* {cholesterol} mg/dl")
+    st.write(f"- *Maximum Heart Rate:* {max_hr} bpm")
+    st.write(f"- *Resting ECG:* {resting_ecg}")
 
-        # Additional message based on prediction
-        if y_pred[0] == 1:
-            st.warning("Based on the prediction, there is a significant chance that you might develop heart failure.")
-        else:
-            st.success("Based on the prediction, it is unlikely that you will develop heart failure.")
+    # Display prediction result
+    st.write(f"### Prediction Results")
+    st.write(f"- *Heart Failure Likelihood:* {heart_failure}")
+    st.write(f"- *Predicted Probability of Heart Failure:* {probability:.2f}%")
+
+    # Additional message based on prediction
+    if heart_failure == "Yes":
+        st.warning("Based on the prediction, there is a significant chance that you might develop heart failure.")
+    else:
+        st.success("Based on the prediction, it is unlikely that you will develop heart failure.")
+
 
 # Customizing Streamlit theme via markdown
 st.markdown("""
