@@ -15,14 +15,14 @@ st.set_page_config(page_title='Heart Failure Prediction', page_icon=':heart:', l
 
 # Title and description
 st.title('Heart Failure Prediction System')
-st.write("Enter the details below to predict the likelihood of heart failure using the KNN model.")
+st.write("Enter the details below to predict the likelihood of heart failure.")
 
 # Input fields for user data
 age = st.number_input('Age:', min_value=0, max_value=120, step=1, help="Enter the age of the patient.")
 resting_bp = st.number_input('Resting Blood Pressure (mm Hg):', min_value=0, step=1, help="Enter the resting blood pressure.")
 cholesterol = st.number_input('Cholesterol Level (mg/dl):', min_value=0, step=1, help="Enter the cholesterol level.")
 max_hr = st.number_input('Maximum Heart Rate (bpm):', min_value=0, step=1, help="Enter the maximum heart rate.")
-resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST (Abnormal)', 'LVH (Left Ventricular Hypertrophy)'], help="Select the type of resting ECG.")
+resting_ecg = st.selectbox('Resting ECG:', ['Normal', 'ST', 'LVH'], help="Select the type of resting ECG.")
 
 # Create a DataFrame for the input data
 input_df = pd.DataFrame({
