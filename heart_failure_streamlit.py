@@ -16,7 +16,7 @@ feature_selector = heart_failure_model['feature_selector']
 st.set_page_config(page_title='Heart Failure Prediction', page_icon=':heart:', layout='wide')
 
 # Add logo or name at the top
-st.image('path/to/logo.png', width=200)  # Add your logo image path
+st.image('heartPic.jpg', width=200)  # Add your logo image path
 st.title('Heart Failure Prediction System')
 st.write("Enter the details below to predict the likelihood of heart failure using the KNN model.")
 
